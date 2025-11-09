@@ -341,9 +341,6 @@
 
         // --- Algorithmic Core (The Real Deal) ---
 
-        /**
-         * Placeholder: Calculates the Balance Modifier (0.5x to 2.0x).
-         */
         function calculateBalanceModifier(analysis) {
              const nutrients = [analysis.Carbs, analysis.Fat, analysis.Protein, analysis.Vitamins];
              // Implementação de desvio padrão simplificada
@@ -352,7 +349,6 @@
              const stdDev = Math.sqrt(variance);
              
              // Fator de balanceamento simplificado: quanto menor o desvio, mais perto de 2.0x
-             // (Esta é uma aproximação que faremos correta na próxima etapa!)
              let modifier = 2.0 - (stdDev / 10);
              if (modifier < 0.5) modifier = 0.5;
              
@@ -431,10 +427,8 @@
                 chartContainer.innerHTML = '';
                 return;
             }
-
-            // [Lógica da Otimização Combinatória seria implementada aqui na próxima etapa]
-            
-            // --- CÁLCULO DUMMY/PROVISÓRIO (Simulação da Dieta) ---
+   
+            // --- Simulação da Dieta ---
             
             const suggestedDiet = []; 
             let currentCalories = 0;
