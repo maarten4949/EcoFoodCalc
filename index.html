@@ -12,7 +12,7 @@
         /* Version Top Right */
         #version-display { float: right; font-size: 0.9em; color: #555; }
         
-        /* --- NOVIDADE: LAYOUT DE DUAS COLUNAS --- */
+        /* --- LAYOUT DE DUAS COLUNAS PARA FERRAMENTAS --- */
         #main-content-layout {
             display: flex;
             gap: 20px; /* Espaço entre as colunas */
@@ -25,18 +25,39 @@
         #column-right {
             flex: 1; /* Ocupa 50% */
             min-width: 45%;
-            padding: 20px; /* Padding para separar visualmente */
+            padding: 20px; 
             border: 1px solid #ddd;
             border-radius: 8px;
             background-color: #f9f9f9;
+        }
+
+        /* --- LAYOUT DA DIETA (Lista + Gráfico lado a lado) --- */
+        #diet-suggestion-container {
+            margin-bottom: 40px;
+            padding: 20px 0; /* Ajuste o padding interno para ficar mais limpo */
+        }
+        
+        /* Estilo para cada opção de dieta */
+        .optimal-diet-box { 
+            border: 2px solid #5cb85c !important; /* Verde mais escuro para o melhor */
+            box-shadow: 0 0 10px rgba(92, 184, 92, 0.4);
+        }
+        .alternative-diet-box {
+            border: 1px solid #ccc;
+        }
+        
+        /* Container interno para dividir lista e análise de nutrientes */
+        .diet-option-content {
+            display: flex;
+            justify-content: space-between;
         }
 
         .food-list { width: 100%; border-collapse: collapse; margin-top: 20px; }
         .food-list th, .food-list td { border: 1px solid #ccc; padding: 8px; text-align: left; }
         .food-list th { 
             background-color: #f2f2f2;
-            cursor: pointer; /* Indica que o cabeçalho é clicável */
-            user-select: none; /* Evita seleção de texto ao clicar */
+            cursor: pointer; 
+            user-select: none; 
         }
         .food-list th.no-sort {
             cursor: default;
@@ -58,17 +79,15 @@
         }
 
         /* Highlighting Rows */
-        .row-favorite { background-color: #fffacd; /* Light Yellow */ }
-        .row-worst { background-color: #ffcccc; /* Light Red */ }
+        .row-favorite { background-color: #fffacd; }
+        .row-worst { background-color: #ffcccc; }
         .row-attention { 
-            background-color: #ffe4b2; /* Orange-Yellow for Attention */
+            background-color: #ffe4b2; 
             border: 2px solid #ffaa00;
         }
         
         /* Status and Tag Styles */
         .status-select { padding: 5px; border-radius: 4px; }
-
-        /* Custom Tag Display */
         .status-tag { 
             padding: 5px 8px; 
             border-radius: 4px; 
@@ -76,8 +95,8 @@
             display: inline-block;
             white-space: nowrap;
         }
-        .status-tag.favorite { background-color: #f0ad4e; color: white; } /* Darker Yellow/Orange */
-        .status-tag.worst { background-color: #d9534f; color: white; } /* Darker Red */
+        .status-tag.favorite { background-color: #f0ad4e; color: white; }
+        .status-tag.worst { background-color: #d9534f; color: white; }
 
 
         /* Footer Style */
@@ -99,13 +118,13 @@
         #global-tags-section {
             display: flex;
             flex-direction: column;
-            align-items: center; /* Centraliza o conteúdo (h3 e div) */
+            align-items: center; 
             margin-bottom: 20px;
         }
         #fav-worst-selects {
             display: flex;
             justify-content: space-between;
-            width: 100%; /* Ajuste para preencher a coluna */
+            width: 100%; 
             max-width: 600px;
         }
         #fav-worst-selects label {
@@ -117,23 +136,6 @@
             width: 100%;
         }
 
-        /* Layout for Diet Section */
-        #diet-suggestion-container {
-            margin-bottom: 40px;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            background-color: #f9f9f9;
-        }
-        #suggested-foods-list {
-            min-width: 100%;
-        }
-        #nutrition-pie-chart-container {
-            width: 100%; 
-            padding-top: 20px;
-            margin-top: 20px;
-            border-top: 1px solid #ccc;
-        }
     </style>
 </head>
 <body>
@@ -166,11 +168,7 @@
         <div id="column-left">
             <h2>Suggested Diet Optimization</h2>
             <div id="diet-suggestion-container">
-                <div id="suggested-foods-list">
-                    <p>Processing optimization algorithm...</p>
-                </div>
-                <div id="nutrition-pie-chart-container">
-                </div>
+                <p>Processing optimization algorithm...</p>
             </div>
         </div>
         <div id="column-right">
@@ -200,12 +198,12 @@
         'HORRIBLE': 'Horrible'
     };
     
-    // Cores para o Gráfico de Pizza (Padrão: Carbs, Fat, Protein, Vitamins)
+    // Cores para o Gráfico de Pizza (PADRÃO DO JOGO ECO)
     const PIE_COLORS = {
-        'Carbs': '#3498db',    // Azul
-        'Fat': '#2ecc71',      // Verde
-        'Protein': '#e74c3c',  // Vermelho
-        'Vitamins': '#f1c40f'  // Amarelo
+        'Carbs': '#d54131',    // Vermelho
+        'Protein': '#e0983e',  // Laranja/Amarelo Escuro
+        'Fat': '#e2bb4a',      // Amarelo Ouro
+        'Vitamins': '#90b13e'  // Verde
     };
 
     const STATUS_OPTIONS = Object.values(FOOD_STATUS_KEYS);
@@ -225,13 +223,14 @@
     let favoriteFood = '';
     let worstFood = '';
     let lastSelectedStatus = FOOD_STATUS_KEYS.DELICIOUS; 
-    let currentSortColumn = 'ORDER_PRIORITY'; // NOVO DEFAULT
-    let currentSortOrder = 'desc';        // ORDENAÇÃO DE TEMPO É SEMPRE DESC (MAIS NOVO NO TOPO)
+    let currentSortColumn = 'ORDER_PRIORITY'; 
+    let currentSortOrder = 'desc';        
 
     // Elementos da UI (variáveis para serem usadas em várias funções)
     const sessionElement = document.getElementById('user-session');
     const foodContainer = document.getElementById('food-container'); 
     const columnRightContainer = document.getElementById('column-right'); 
+    const dietSuggestionContainer = document.getElementById('diet-suggestion-container'); 
 
     // Mapeamento de cabeçalhos de coluna para chaves do JSON
     const COLUMN_MAPPING = {
@@ -497,89 +496,189 @@
 
 
     // --- Algorithmic Core (The Real Deal) ---
-
+    
     /**
-     * Calcula o Fator de Balanceamento (Calorias / Total de Nutrientes).
+     * Calcula o score de balanceamento da dieta (baseado no Desvio Padrão).
+     * Quanto menor o score, mais equilibrada a dieta.
      */
-    function calculateNutrientDensity(food) {
-        const totalNutrients = food.Carbs + food.Fat + food.Protein + food.Vitamins;
-        // Evita divisão por zero.
-        return totalNutrients > 0 ? food.Official_Calories_Game / totalNutrients : Infinity; 
+    function calculateDietScore(totals) {
+        const totalSum = totals.Carbs + totals.Fat + totals.Protein + totals.Vitamins;
+        if (totalSum === 0) return Infinity;
+
+        const percentages = [
+            (totals.Carbs / totalSum) * 100,
+            (totals.Fat / totalSum) * 100,
+            (totals.Protein / totalSum) * 100,
+            (totals.Vitamins / totalSum) * 100,
+        ];
+        
+        const ideal = 25;
+        const variance = percentages.reduce((sum, val) => sum + Math.pow(val - ideal, 2), 0) / 4;
+        return Math.sqrt(variance); // Score é o Desvio Padrão
     }
 
+
+    /**
+     * Calculates the Balance Modifier (0.5x to 2.0x) based on the diet score (StdDev).
+     * O Desvio Padrão (Score) 50 é o pior (0.5x), Desvio 0 é o melhor (2.0x).
+     */
     function calculateBalanceModifier(analysis) {
-         const nutrients = [analysis.Carbs, analysis.Fat, analysis.Protein, analysis.Vitamins];
-         // Implementação de desvio padrão simplificada
-         const avg = 25;
-         const variance = nutrients.reduce((sum, val) => sum + Math.pow(val - avg, 2), 0) / 4;
-         const stdDev = Math.sqrt(variance);
+         const score = calculateDietScore(analysis);
+         // Regra simplificada: 
+         // Score 0 (perfeito) -> Modifier 2.0
+         // Score 50 (pior) -> Modifier 0.5
          
-         // Fator de balanceamento simplificado: quanto menor o desvio, mais perto de 2.0x
-         let modifier = 2.0 - (stdDev / 10);
+         // Mapeamento linear: f(score) = 2.0 - (score * 0.03) 
+         let modifier = 2.0 - (score * 0.03); 
          if (modifier < 0.5) modifier = 0.5;
-         
+         if (modifier > 2.0) modifier = 2.0;
+
          return `${modifier.toFixed(2)}x`;
     }
 
     /**
-     * Renders the nutrient distribution legend/analysis.
+     * Gera o HTML da distribuição de nutrientes (Nutrient Distribution)
      */
-    function renderPieChart(analysis) {
-        const chartContainer = document.getElementById('nutrition-pie-chart-container');
+    function renderNutrientDistribution(dietAnalysis) {
+        
+        const totalNutrients = dietAnalysis.totals.Carbs + dietAnalysis.totals.Fat + dietAnalysis.totals.Protein + dietAnalysis.totals.Vitamins;
+        
+        if (totalNutrients === 0) return '';
+
+        // NOTE: Mapeamos Carbs/Protein/Fat/Vitamins para as chaves do objeto totals e cores.
+        const analysis = {
+            Carbs: (dietAnalysis.totals.Carbs / totalNutrients) * 100,
+            Protein: (dietAnalysis.totals.Protein / totalNutrients) * 100,
+            Fat: (dietAnalysis.totals.Fat / totalNutrients) * 100,
+            Vitamins: (dietAnalysis.totals.Vitamins / totalNutrients) * 100
+        };
+
         const data = [
             { label: 'Carbs', percent: analysis.Carbs, color: PIE_COLORS.Carbs, goal: 25 },
-            { label: 'Fat', percent: analysis.Fat, color: PIE_COLORS.Fat, goal: 25 },
             { label: 'Protein', percent: analysis.Protein, color: PIE_COLORS.Protein, goal: 25 },
+            { label: 'Fat', percent: analysis.Fat, color: PIE_COLORS.Fat, goal: 25 },
             { label: 'Vitamins', percent: analysis.Vitamins, color: PIE_COLORS.Vitamins, goal: 25 }
         ];
-        
+
         const balanceModifier = calculateBalanceModifier(analysis);
 
-        chartContainer.innerHTML = `
-            <h4 style="text-align: center;">Nutrient Distribution</h4>
-            <div style="font-size: 1.1em; text-align: center; margin-bottom: 10px;">
-                <strong>Balance Modifier: ${balanceModifier}</strong>
+        // --- Lógica do Círculo (Conic Gradient) ---
+        let currentAngle = 0;
+        let gradientStops = [];
+
+        data.forEach(slice => {
+            const angleSize = (slice.percent / 100) * 360; 
+            const startAngle = currentAngle;
+            const endAngle = currentAngle + angleSize;
+            
+            // Define o início e fim da cor no gradiente
+            gradientStops.push(`${slice.color} ${startAngle.toFixed(1)}deg ${endAngle.toFixed(1)}deg`);
+            
+            currentAngle = endAngle;
+        });
+        
+        const conicGradientStyle = `background: conic-gradient(${gradientStops.join(', ')});`;
+        
+        // --- Lógica da Lista de Porcentagens com Destaque de Cor ---
+        
+        let html = `
+            <div style="flex: 1; padding-left: 20px; display: flex; flex-direction: column; align-items: center;">
+                <h5 style="text-align: center; margin-top: 0;">Nutrient Distribution</h5>
+                
+                <div style="width: 100px; height: 100px; border-radius: 50%; border: 3px solid #333; margin-bottom: 10px; ${conicGradientStyle}">
+                    </div>
+                
+                <div style="font-size: 1.0em; text-align: center; margin-bottom: 10px;">
+                    <strong>Balance Modifier: ${balanceModifier}</strong>
+                </div>
+                <div style="width: 100%;">
+                    <ul style="list-style-type: none; padding: 0;">
+                        ${data.map(slice => {
+                            // Regra de destaque: Vermelho se muito fora (22% a 28% é a margem ideal)
+                            const isUnbalanced = slice.percent > 28 || slice.percent < 22;
+                            const colorStyle = `color: ${isUnbalanced ? '#f44336' : '#4CAF50'};`; 
+                            
+                            return `<li style="font-weight: ${isUnbalanced ? 'bold' : 'normal'};">
+                                <span style="display: inline-block; width: 10px; height: 10px; background-color: ${slice.color}; margin-right: 4px;"></span> 
+                                <span style="${colorStyle}">${slice.label}: ${slice.percent.toFixed(1)}% (Goal: ${slice.goal}%)</span>
+                            </li>`;
+                        }).join('')}
+                    </ul>
+                </div>
             </div>
-            <div style="width: 100%; height: 120px;">
-                <ul style="list-style-type: none; padding: 0;">
-                    ${data.map(slice => 
-                        `<li style="font-weight: ${slice.percent > 28 || slice.percent < 22 ? 'bold' : 'normal'};">
-                            <span style="display: inline-block; width: 10px; height: 10px; background-color: ${slice.color}; margin-right: 4px;"></span> 
-                            ${slice.label}: ${slice.percent.toFixed(1)}% (Goal: ${slice.goal}%)
-                        </li>`
-                    ).join('')}
-                </ul>
-            </div>`;
+        `;
+        return html;
     }
 
     /**
-     * Calculates the suggested diet based on user preferences and nutrient balance (Guloso).
+     * Gera o HTML completo para uma opção de dieta (lista + distribuição).
+     */
+    function renderDietOption(dietAnalysis, optionNumber) {
+        const isOptimal = optionNumber === 1;
+        const title = isOptimal ? `Optimal Meal (Best Balance):` : `Option ${optionNumber}`;
+        const itemClass = isOptimal ? 'optimal-diet-box' : 'alternative-diet-box';
+        
+        let foodListHtml = '';
+        
+        // Agrupa os alimentos repetidos para melhor visualização
+        const foodCounts = dietAnalysis.diet.reduce((acc, food) => {
+            const key = food.Food_Name;
+            if (!acc[key]) {
+                acc[key] = { count: 0, food: food };
+            }
+            acc[key].count++;
+            return acc;
+        }, {});
+
+        for (const key in foodCounts) {
+            const item = foodCounts[key];
+            // 🚨 CORREÇÃO: Mostra sempre o multiplicador 1x quando a contagem é 1.
+            const multiplier = `${item.count}x `; 
+            foodListHtml += `<li>- ${multiplier}${item.food.Food_Name} (${item.food.Official_Calories_Game} Kcal) [Status: ${userPreferences[item.food.Food_Name].status}]</li>`;
+        }
+        
+        let html = `
+            <div class="${itemClass}" style="margin-bottom: 25px; border: 1px solid ${isOptimal ? '#5cb85c' : '#ccc'}; padding: 15px; border-radius: 6px;">
+                <h4 style="margin-top: 0; color: ${isOptimal ? '#449d44' : '#333'};">${title}</h4>
+                <div class="diet-option-content" style="display: flex; justify-content: space-between;">
+                    <div style="flex: 1;">
+                        <p><strong>Total Diet Calories: ${dietAnalysis.totals.TotalCalories} Kcal (Balance Score: ${dietAnalysis.score.toFixed(2)})</strong></p>
+                        <ul style="list-style-type: none; padding: 0;">
+                            ${foodListHtml}
+                        </ul>
+                    </div>
+                    ${renderNutrientDistribution(dietAnalysis)}
+                </div>
+            </div>
+        `;
+        return html;
+    }
+
+
+    /**
+     * Calculates the suggested diet based on user preferences and nutrient balance.
      */
     function calculateSuggestedDiet() {
-        const listContainer = document.getElementById('suggested-foods-list');
-        const chartContainer = document.getElementById('nutrition-pie-chart-container');
+        const listContainer = dietSuggestionContainer;
         
         // Passo 1: Filtrar Alimentos Disponíveis e Aceitáveis
         const availableFoods = foodData.filter(item => {
             const name = item.Food_Name;
             const prefs = userPreferences[name];
             
-            // --- Regras de Exclusão (Filtro Básico) ---
+            // --- Regras de Exclusão (Filtro de Gosto) ---
             if (!prefs) return false; 
             
-            // 1. Excluir se o jogador não avaliou ou removeu da lista
+            // Excluir se o jogador removeu, não avaliou, ou deu nota ruim (BAD, HORRIBLE, WORST)
             if (prefs.status === FOOD_STATUS_KEYS.REMOVE_FROM_LIST || 
-                prefs.status === FOOD_STATUS_KEYS.SELECT_STATUS) { 
-                return false;
-            }
-            
-            // 2. Regra de Gosto é Lei (Horrible é banido)
-            if (prefs.status === FOOD_STATUS_KEYS.HORRIBLE || 
+                prefs.status === FOOD_STATUS_KEYS.SELECT_STATUS ||
+                prefs.status === FOOD_STATUS_KEYS.BAD ||
+                prefs.status === FOOD_STATUS_KEYS.HORRIBLE ||
                 name === worstFood) {
                 return false;
             }
             
-            // 3. Excluir se a caloria da comida for maior que o estômago
+            // Excluir se a caloria da comida for maior que o estômago
             if (item.Official_Calories_Game > stomachSize) {
                 return false;
             }
@@ -588,79 +687,134 @@
         });
 
         if (availableFoods.length === 0) {
-            listContainer.innerHTML = '<p style="color: red;">No suitable foods available based on your current evaluation. Please evaluate some items as GOOD, OK, or DELICIOUS.</p>';
-            chartContainer.innerHTML = '';
+            listContainer.innerHTML = `<p style="color: red;">Goal Calories: ${stomachSize} Kcal</p><p style="color: red;">No suitable foods available based on your current evaluation. Please evaluate some items as GOOD, OK, or DELICIOUS (and not BAD/HORRIBLE).</p>`;
             return;
         }
 
-        // --- Passo 2: OTIMIZAÇÃO GULOSA ---
+        // --- Passo 2: OTIMIZAÇÃO POR BUSCA DE COMBINAÇÃO (Com Repetição e Maximização Calórica) ---
         
-        // 2a. Calcule a Densidade Nutricional para cada item
-        const prioritizedFoods = availableFoods.map(food => ({
-            ...food,
-            density: calculateNutrientDensity(food)
-        }));
+        let bestDiets = []; 
+        const MAX_ITEMS_TYPES = 6; // Máximo de TIPOS diferentes de alimentos na dieta
+        const MAX_ITERATIONS = 5000; 
 
-        // 2b. Ordene os alimentos.
-        // O Algoritmo Guloso (Density-Based): prioriza alimentos com menor Fator de Balanceamento (mais nutrientes por caloria).
-        prioritizedFoods.sort((a, b) => a.density - b.density);
-
-        
-        // 2c. Montar a Dieta
-        const suggestedDiet = []; 
-        let currentCalories = 0;
-        let count = 0; // Limite de 10 itens para evitar dietas muito longas
-
-        for (const food of prioritizedFoods) {
-            if (currentCalories + food.Official_Calories_Game <= stomachSize && count < 10) {
-                suggestedDiet.push(food);
-                currentCalories += food.Official_Calories_Game;
-                count++;
+        /**
+         * Gera uma dieta aleatória (pode ter repetição) que preenche o estômago.
+         */
+        const generateRandomDiet = () => {
+            let diet = [];
+            let currentCalories = 0;
+            
+            // 1. Seleciona aleatoriamente um POOL de alimentos (max 6 tipos diferentes)
+            const uniqueFoodCount = Math.min(availableFoods.length, 2 + Math.floor(Math.random() * (MAX_ITEMS_TYPES - 1)));
+            
+            const foodsToDrawFrom = [];
+            while (foodsToDrawFrom.length < uniqueFoodCount) {
+                const randomIndex = Math.floor(Math.random() * availableFoods.length);
+                const food = availableFoods[randomIndex];
+                if (!foodsToDrawFrom.includes(food)) {
+                    foodsToDrawFrom.push(food);
+                }
             }
-        }
 
-        // --- Passo 3: Analisar e Renderizar Resultados ---
-        
-        if (suggestedDiet.length === 0) {
-             listContainer.innerHTML = '<p style="color: red;">Could not find a single food to fit within your stomach size limit.</p>';
-             chartContainer.innerHTML = '';
-             return;
-        }
-        
-        let totalCarbs = 0;
-        let totalFat = 0;
-        let totalProtein = 0;
-        let totalVitamins = 0;
-        
-        suggestedDiet.forEach(food => {
-            totalCarbs += food.Carbs;
-            totalFat += food.Fat;
-            totalProtein += food.Protein;
-            totalVitamins += food.Vitamins;
-        });
-        
-        const totalNutrients = totalCarbs + totalFat + totalProtein + totalVitamins;
-        
-        const dietAnalysis = {
-            Carbs: (totalCarbs / totalNutrients) * 100,
-            Fat: (totalFat / totalNutrients) * 100,
-            Protein: (totalProtein / totalNutrients) * 100,
-            Vitamins: (totalVitamins / totalNutrients) * 100,
-            TotalCalories: currentCalories
+            // 2. Tenta preencher o estômago até o limite, usando repetição
+            let availableDraws = [...foodsToDrawFrom]; // Lista de itens que ainda podem ser adicionados
+            let attemptLimit = 100; // Limite de tentativas para evitar loop infinito
+
+            // Otimização: Sempre tenta adicionar o item, mas se não couber, remove ele do pool temporariamente.
+            while (currentCalories < stomachSize && availableDraws.length > 0 && attemptLimit > 0) {
+                // Escolhe um item aleatoriamente do pool restante
+                const foodIndex = Math.floor(Math.random() * availableDraws.length);
+                const foodToRepeat = availableDraws[foodIndex];
+                
+                if (currentCalories + foodToRepeat.Official_Calories_Game <= stomachSize) {
+                    diet.push(foodToRepeat);
+                    currentCalories += foodToRepeat.Official_Calories_Game;
+                    // Mantém o item no pool, permitindo a repetição
+                } else {
+                    // Remove do pool de draws, pois não cabe mais
+                    availableDraws.splice(foodIndex, 1);
+                }
+                attemptLimit--;
+            }
+
+            return diet;
         };
         
-        // Renderizar Resultados
+        /**
+         * Calcula os totais e o score de uma dieta.
+         */
+        const analyzeDiet = (diet) => {
+            let totals = { Carbs: 0, Fat: 0, Protein: 0, Vitamins: 0, TotalCalories: 0 };
+            
+            if (diet.length === 0) return { score: Infinity, totals: totals };
+
+            diet.forEach(food => {
+                totals.Carbs += food.Carbs;
+                totals.Fat += food.Fat;
+                totals.Protein += food.Protein;
+                totals.Vitamins += food.Vitamins;
+                totals.TotalCalories += food.Official_Calories_Game;
+            });
+            
+            const score = calculateDietScore(totals);
+            
+            // Retorna o resultado completo
+            return { diet, score, totals };
+        };
+
+        const resultsMap = new Map(); 
+
+        for (let i = 0; i < MAX_ITERATIONS; i++) {
+            const diet = generateRandomDiet();
+            if (diet.length < 2) continue; // Ignora dietas de 0 ou 1 item
+
+            // Cria a chave única baseada em NOME + CONTAGEM (para dietas com repetição)
+            const uniqueFoodCounts = diet.reduce((acc, food) => {
+                acc[food.Food_Name] = (acc[food.Food_Name] || 0) + 1;
+                return acc;
+            }, {});
+
+            const dietKey = Object.keys(uniqueFoodCounts).sort().map(name => `${name}:${uniqueFoodCounts[name]}`).join('|');
+
+
+            if (!resultsMap.has(dietKey)) {
+                const analysis = analyzeDiet(diet);
+                resultsMap.set(dietKey, analysis);
+                bestDiets.push(analysis);
+            }
+        }
         
-        listContainer.innerHTML = '<h4>Optimal Meal (Prototype - Filtered):</h4>';
-        listContainer.innerHTML += `
-            <p><strong>Goal Calories: ${stomachSize} Kcal</strong></p>
-            <p><strong>Total Diet Calories: ${dietAnalysis.TotalCalories} Kcal (Remaining: ${stomachSize - dietAnalysis.TotalCalories} Kcal)</strong></p>
-            <ul style="list-style-type: none; padding: 0;">
-                ${suggestedDiet.map(food => `<li>- ${food.Food_Name} (${food.Official_Calories_Game} Kcal) [Status: ${userPreferences[food.Food_Name].status}]</li>`).join('')}
-            </ul>
-        `;
+        // 3. Ordenar as dietas pelo menor score (melhor balanceamento)
         
-        renderPieChart(dietAnalysis);
+        // Critério de Ordenação OTIMIZADO:
+        // Ordem Primária: Score (menor é melhor)
+        // Ordem Secundária (Desempate): Total Calories (maior é melhor, pois enche mais o estômago)
+        bestDiets.sort((a, b) => {
+            if (Math.abs(a.score - b.score) > 0.05) { // Diferença de Score significativa (0.05 é um bom limite)
+                return a.score - b.score; // Prioriza o melhor Score
+            } else {
+                return b.totals.TotalCalories - a.totals.TotalCalories; // Se o Score é parecido, prioriza mais Calorias (melhor SP)
+            }
+        });
+        
+        
+        // Pegar as 3 melhores
+        const top3Diets = bestDiets.slice(0, 3);
+        
+        if (top3Diets.length === 0) {
+             listContainer.innerHTML = `<p style="color: red;">Goal Calories: ${stomachSize} Kcal</p><p style="color: red;">Could not find any diet combination that fits the stomach size limit and preferences.</p>`;
+             return;
+        }
+
+        // --- Passo 3: Renderizar Resultados ---
+        
+        let finalHtml = `<p><strong>Goal Calories: ${stomachSize} Kcal</strong></p>`;
+
+        top3Diets.forEach((diet, index) => {
+            finalHtml += renderDietOption(diet, index + 1);
+        });
+
+        dietSuggestionContainer.innerHTML = finalHtml;
     }
 
 
@@ -967,7 +1121,7 @@
     }
 
 
-    // --- Core Helper Functions ---
+    // --- Core Functions (Non-Global) ---
     
     /**
      * Loads preferences from localStorage or sets initial 'Remove from list' status.
@@ -1109,6 +1263,5 @@
     // Initialize the application at the end of the script
     initApp();
 </script>
-
 </body>
 </html>
