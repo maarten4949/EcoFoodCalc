@@ -1,28 +1,46 @@
 # 🥦 Eco Food Calculator (EcoFoodCalc)
 
-## Project Overview
+## 🚧 Project Status: Feature Complete (Functional Dev UI)
 
-Welcome to **EcoFoodCalc**! This project is a web application designed to help players of the survival game **Eco** (developed by Strange Loop Games) optimize their in-game diet to achieve the maximum possible **Nutrition Bonus** for skill point gain.
+Welcome to **EcoFoodCalc**! This project is a robust, functional web application designed to help players of **Eco** (developed by Strange Loop Games) optimize their in-game diet to achieve the maximum possible **Nutrition Bonus** for skill point gain.
 
-The player's **Skill Point gain rate is a product of both Housing Quality and Nutritional Balance.** By using the official game data extracted directly from the server files, this tool provides players with data-driven insights to manage their food consumption efficiently, ensuring their **Nutrition Bonus** is maximized, directly boosting the speed at which they level up professions.
+The core of the application utilizes a highly refined **optimization algorithm** to find the ideal nutritional balance (25% Carbs, 25% Fat, 25% Protein, 25% Vitamins) based on the player's dietary preferences and stomach capacity.
 
-## Goal
+---
 
-To provide an easy-to-use interface where players can manage their available food sources and receive **suggested recipes and meal plans** that maximize the player's nutritional balance (Carbs, Fat, Protein, Vitamins) for an optimal skill point multiplier.
+## ✨ Achieved Milestones
 
-## Key Features (Planned)
+The core engine and all complex functionalities are fully implemented. We have achieved a powerful V1 optimization tool:
 
-* **Food Availability Filter:** Allow users to flag which food items they **have**, **dislike**, or are **available for purchase** from other players' stores.
-* **Diet Optimization Engine:** Based on user input and the official game data, the app will suggest the most efficient combination of available foods to achieve a balanced diet.
-* **Official Game Data:** Built using the precise nutrient (`Carbs`, `Fat`, `Protein`, `Vitamins`) and calorie values (`Official_Calories_Game`) extracted from the official Eco game server files.
-* **Interactive UI:** A clear and intuitive interface to visualize nutrient balance in real-time.
+* **Optimal Balance Engine:** The tool uses a search algorithm based on **Standard Deviation** and **Caloric Maximization** to suggest the 3 best meal plans, aiming for perfect $25/25/25/25$ nutrient distribution.
+* **Max Calorie Usage:** The algorithm correctly handles the repetition of food items (e.g., $3\times$ Bread) to fill the player's stomach capacity precisely.
+* **Game Visuals Integration:** The nutritional breakdown is displayed with a **circular segment meter** using the official Eco game colors for instant feedback.
+* **Data Persistence & Portability:** Complete functionality to **Export/Import** user preferences, custom tags, and dietary exclusions.
+* **Taste Profile Respect:** Suggested diets automatically exclude foods flagged by the user as `BAD`, `HORRIBLE`, or the globally set `WORST` food.
 
-## Data Source
+---
+
+## 🎯 Next Steps: Priorities for Collaboration
+
+The project now needs community involvement to transition from a strong technical tool into a polished, game-ready application.
+
+| Priority | Focus Area | Description |
+| :---: | :---: | :--- |
+| **1** | **User Interface (UI/UX)** | The current interface is a **functional development shell**. We need a complete, modern, and aesthetically pleasing **User Interface** that matches the quality of the optimization engine. |
+| **2** | **In-Game Validation** | Thorough testing and cross-referencing of the final suggested diets to confirm that the calculated `Balance Modifier` and $SP$ gains align perfectly with the actual game mechanics and engine output. |
+| **3** | **Deterministic Algorithm** | Replace the current random-search algorithm (which is fast, but not exhaustive) with a **Deterministic Method**, ideally using **Integer Linear Programming (ILP)**, to guarantee the absolute globally optimal combination of foods. |
+| **4** | **Server Integration** | Implement a method to automatically generate or update the `foodsource.json` data based on a specific custom server's files, addressing custom recipes and altered nutrient values. |
+
+---
+
+## 📂 Data Source
 
 The core data used by this application is located in the `foodsource.json` file within this repository. This data was derived by analyzing the C# source files (`.cs`) from the Eco server (specifically the `public override Nutrients` and `public override float Calories` fields) to ensure absolute accuracy with in-game mechanics.
 
-## Contribution
+---
 
-This project is open-source! Whether you want to help with the **frontend** (React/Vue/Svelte), improve the **optimization algorithm** (the real math puzzle!), or enhance the **data extraction** process, all contributions are welcome.
+## 🤝 Contribution
 
-Feel free to fork the repository, open an issue, or submit a pull request!
+This project is open-source! Whether you want to help with the **design** (Priority 1), contribute to the **complex math** (Priority 3), or enhance the **data extraction** process (Priority 4), all contributions are welcome.
+
+Feel free to fork the repository, open an issue detailing your intended changes, or submit a pull request!
