@@ -92,13 +92,21 @@
                 <h2>Set Initial Status:</h2>
             </header>
             <main>
-                <form id="food-form" onsubmit="addFoodToEvaluatedList(event)">
-                    <label for="food-status">Status:</label>
-                    <select id="food-status"></select>
-                    <label for="food">Food:</label>
-                    <input type="text" placeholder="Type or select food name"id="food"  list="food-datalist"></input>
-                    <datalist id="food-datalist"></datalist>
-                    <button>Add Food</button>
+                <form id="food-form" class="food-form" onsubmit="addFoodToEvaluatedList(event)">
+                    <div class="form-group-container">
+                        <div class="form-group">
+                            <label for="food-status">Status:</label>
+                            <select id="food-status"></select>
+                        </div>
+                        <div class="form-group">
+                            <label for="food">Food:</label>
+                            <input type="text" placeholder="Type or select food name"id="food" list="food-datalist"></input>
+                            <datalist id="food-datalist"></datalist>
+                        </div>
+                    </div>
+                    <div class="button-group">
+                        <button class="button button-primary">Add Food</button>
+                    </div>
                 </form>
             </main>
         </div>
