@@ -10,36 +10,57 @@
             rel="stylesheet"
             type="text/css"
             href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css"
-          />
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+        />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+            rel="stylesheet"
+        />
     </head>
     <body>
-
-
         <div class="title-card">
-            <div class="u-flex-grow">
+            <div class="title-header">
                 <h1>Eco FoodCalc - Diet Optimizer</h1>
                 <p>
-                    This tool helps maximize your <span class="u-bold">Nutrition Bonus</span> for faster skill
+                    This tool helps maximize your
+                    <span class="u-bold">Nutrition Bonus</span> for faster skill
                     point gain in Eco.
                 </p>
             </div>
-            <div class="">
+            <div class="title-actions-status">
                 <div class="actions">
-                    <button onclick="resetPreferences()" class="reset-button button button-danger"><i class="ph ph-cube"></i>Reset All Preferences</button>
-                    <button onclick="exportUserData()" class="export-button button"><i class="ph ph-cube"></i>Export Data</button>
-                    <input type="file" id="import-file-input" accept=".json" style="display: none" onchange="importUserData()">
-                    <button onclick="document.getElementById('import-file-input').click()" class="import-button button"><i class="ph ph-cube"></i>Import Data</button>
+                    <button
+                        onclick="resetPreferences()"
+                        class="reset-button button button-danger"
+                    >
+                        <i class="ph ph-trash icon"></i>Reset Data
+                    </button>
+                    <button
+                        onclick="exportUserData()"
+                        class="export-button button"
+                    >
+                        Export Data
+                    </button>
+                    <input
+                        type="file"
+                        id="import-file-input"
+                        accept=".json"
+                        style="display: none"
+                        onchange="importUserData()"
+                    />
+                    <button
+                        onclick="document.getElementById('import-file-input').click()"
+                        class="import-button button"
+                    >
+                        <i class="ph ph-download-simple icon"></i>Import Data
+                    </button>
                 </div>
                 <p>Current Session Status: <span id="user-session"></span></p>
             </div>
         </div>
 
-
-
-        <div style="margin-bottom: 20px">
+        <div>
             <label for="stomach-size-input">Stomach Size (Calories): </label>
             <input
                 type="number"
@@ -48,24 +69,17 @@
                 min="100"
                 onchange="updateStomachSize(this.value)"
             />
+            <div id="column-right"></div>
         </div>
-
-        <hr />
-
-        <div id="main-content-layout">
+        <div class="full-width-card">
             <div id="column-left">
                 <h2>Suggested Diet Optimization</h2>
                 <div id="diet-suggestion-container">
                     <p>Processing optimization algorithm...</p>
                 </div>
             </div>
-            <div id="column-right"></div>
         </div>
-
-        <hr />
-
-        <div id="food-container"></div>
-
+        <div id="food-container" class="full-width-card"></div>
         <footer>
             <hr />
             <div id="version-display">
@@ -74,8 +88,5 @@
             </div>
             <p>Created by CrazySpy. Design by Maarten494</p>
         </footer>
-
-
-        </script>
     </body>
 </html>

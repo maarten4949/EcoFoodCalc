@@ -229,7 +229,7 @@ footer {
     --color-status-negative: var(--red);
     --color-normal-inverted: var(--grey-10);
 }
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
     :root {
         --background-layer-1: var(--grey-90);
         --background-layer-2: var(--grey-100);
@@ -243,19 +243,41 @@ footer {
         --color-soft: var(--grey-20);
         --color-light: var(--grey-30);
     }
+} */
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 body {
     background-color: var(--background-layer-1);
     font-size: var(--fz-3);
     line-height: 1.5;
     font-family: Inter, sans-serif;
+    padding: var(--spacing-08);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-07);
 }
 button {
     cursor: pointer;
     font-family: Inter, sans-serif;
 }
+h1 {
+    font-size: var(--fz-8);
+    line-height: var(--spacing-08);
+}
+footer {
+    grid-column: span 2;
+}
+.icon {
+    font-size: var(--fz-6);
+    color: var(--color-normal);
+}
 .button {
-    padding: var(--spacing-03);
+    padding: calc(var(--spacing-03) - 1px);
     border-radius: var(--radius);
     border: 1px solid var(--border-normal);
     background-color: var(--background-layer-2);
@@ -263,19 +285,41 @@ button {
     align-items: center;
     gap: var(--spacing-03);
     font-size: var(--fz-3);
+    line-height: var(--spacing-06);
 }
 .button-danger {
     color: var(--color-status-negative);
     border-color: var(--border-status-negative);
+
+    & .icon {
+        color: var(--color-status-negative);
+    }
 }
 .title-card {
     padding: 1rem;
     display: flex;
+    gap: 1rem;
     background-color: var(--background-layer-2);
     border: 1px solid var(--border-normal);
     border-radius: var(--radius-l);
+    grid-column: span 2;
 }
-@media (width < 900px) {
+.title-header {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-05);
+}
+.title-actions-status {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-05);
+    align-items: flex-end;
+}
+.full-width-card {
+    grid-column: span 2;
+}
+@media (width < 1100px) {
     .title-card {
         flex-direction: column;
         align-items: flex-start;
@@ -288,9 +332,6 @@ button {
 }
 
 /* Utilities */
-.u-flex-grow {
-    flex-grow: 1;
-}
 .u-bold {
     font-weight: 600;
 }
