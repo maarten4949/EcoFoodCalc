@@ -269,8 +269,27 @@ h1 {
     font-size: var(--fz-8);
     line-height: var(--spacing-08);
 }
+h2 {
+    font-size: var(--fz-5);
+    line-height: var(--spacing-07);
+}
 footer {
     grid-column: span 2;
+}
+.card {
+    border-radius: var(--radius-l);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-05);
+    background-color: var(--background-layer-2);
+    border: 1px solid var(--border-normal);
+    & header {
+        padding: var(--spacing-05);
+        border-bottom: 1px solid var(--border-normal);
+    }
+    & main {
+        padding: var(--spacing-05);
+    }
 }
 .icon {
     font-size: var(--fz-6);

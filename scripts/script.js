@@ -1,4 +1,3 @@
-
 const FOOD_SOURCE_URL = "foodsource.json";
 
 // Define ALL possible status states.
@@ -129,7 +128,8 @@ function updateStomachSize(newValue) {
 /**
  * Sets a new Favorite or Worst food and re-renders the list.
  */
-function setGlobalTag(selectElement, tagType) {
+function setGlobalTag(selectElement) {
+  const tagType = selectElement.dataset.tagType;
   const foodName = selectElement.value;
 
   if (tagType === "favorite") {
@@ -719,7 +719,7 @@ async function initApp() {
   columnRightContainer = document.getElementById("column-right");
   dietSuggestionContainer = document.getElementById(
     "diet-suggestion-container",
-);
+  );
   sessionElement.textContent = "Checking preferences...";
   foodContainer.innerHTML = "Loading food data..."; // Dynamic loading message
 
@@ -774,16 +774,18 @@ function renderFoodLists() {
   calculateSuggestedDiet();
 
   // --- COLUNA DIREITA (Tags + Busca) ---
-  let rightColumnHtml = renderGlobalTagSelectors(evaluatedFoods);
-
-  rightColumnHtml += '<hr style="margin: 20px 0;">';
+  let rightColumnHtml = "";
+  document.querySelector("#favorite-food").innerHTML = generateSelectHtml(
+    "favorite",
+    evaluatedFoods,
+  );
+  document.querySelector("#worst-food").innerHTML = generateSelectHtml(
+    "worst",
+    evaluatedFoods,
+  );
 
   // Passo 1: INTERFACE DE BUSCA
-  rightColumnHtml += "<h2>1. Evaluate New Foods</h2>";
-  rightColumnHtml +=
-    "<p>Select a status, then search or select a food to add it to your evaluated list.</p>";
   rightColumnHtml += renderSearchInterface(unevaluatedFoods);
-
   columnRightContainer.innerHTML = rightColumnHtml;
 
   // --- TABELA DE AVALIADAS (Abaixo das colunas) ---
@@ -946,45 +948,24 @@ function renderEvaluatedTable(foods) {
   tableHtml += "</tbody></table>";
   return tableHtml;
 }
-
-/**
- * Renders the new global Favorite/Worst selectors.
- */
-function renderGlobalTagSelectors(foods) {
-  // Gera as opções HTML completas para os dois dropdowns
-  const generateSelectHtml = (tagType) => {
-    const currentValue = tagType === "favorite" ? favoriteFood : worstFood;
-
-    // Lista de opções, garantindo que o item CURRENTLY SELECIONADO seja marcado
-    const options = foods
-      .map((item) => {
-        const name = item.Food_Name;
-        const isSelected = name === currentValue;
-        return `<option value="${name}" ${isSelected ? "selected" : ""}>${name}</option>`;
-      })
-      .join("");
-
-    return `
-         <select onchange="setGlobalTag(this, '${tagType}')">
-             <option value="" ${currentValue === "" ? "selected" : ""}>--- Select ---</option>
-             ${options}
-             <option value="" disabled>---</option>
-             <option value="">(None)</option>
-         </select>
-     `;
-  };
+const generateSelectHtml = (tagType, foods) => {
+  const currentValue = tagType === "favorite" ? favoriteFood : worstFood;
+  // Lista de opções, garantindo que o item CURRENTLY SELECIONADO seja marcado
+  const options = foods
+    .map((item) => {
+      const name = item.Food_Name;
+      const isSelected = name === currentValue;
+      return `<option value="${name}" ${isSelected ? "selected" : ""}>${name}</option>`;
+    })
+    .join("");
 
   return `
-     <div id="global-tags-section">
-         <h3>Global Taste Tags (Single Selection)</h3>
-         <div id="fav-worst-selects">
-             <label>Favorite Food (1): ${generateSelectHtml("favorite")}</label>
-             <label>Worst Food (1): ${generateSelectHtml("worst")}</label>
-         </div>
-     </div>
- `;
-}
-
+      <option value="" ${currentValue === "" ? "selected" : ""}>--- Select ---</option>
+      ${options}
+      <option value="" disabled>---</option>
+      <option value="">(None)</option>
+   `;
+};
 /**
  * Renders the search/selection interface (using datalist for type-ahead search).
  */
