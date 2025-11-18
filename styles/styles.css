@@ -1,0 +1,166 @@
+/* Basic Styles */
+body {
+    font-family: sans-serif;
+    margin: 20px;
+}
+h1 {
+    color: #333;
+    display: inline-block;
+    margin: 0;
+}
+
+/* Version Top Right */
+#version-display {
+    float: right;
+    font-size: 0.9em;
+    color: #555;
+}
+
+/* --- LAYOUT DE DUAS COLUNAS PARA FERRAMENTAS --- */
+#main-content-layout {
+    display: flex;
+    gap: 20px; /* Espaço entre as colunas */
+    margin-bottom: 40px;
+}
+#column-left {
+    flex: 1; /* Ocupa 50% */
+    min-width: 45%;
+}
+#column-right {
+    flex: 1; /* Ocupa 50% */
+    min-width: 45%;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+/* --- LAYOUT DA DIETA (Lista + Gráfico lado a lado) --- */
+#diet-suggestion-container {
+    margin-bottom: 40px;
+    padding: 20px 0; /* Ajuste o padding interno para ficar mais limpo */
+}
+
+/* Estilo para cada opção de dieta */
+.optimal-diet-box {
+    border: 2px solid #5cb85c !important; /* Verde mais escuro para o melhor */
+    box-shadow: 0 0 10px rgba(92, 184, 92, 0.4);
+}
+.alternative-diet-box {
+    border: 1px solid #ccc;
+}
+
+/* Container interno para dividir lista e análise de nutrientes */
+.diet-option-content {
+    display: flex;
+    justify-content: space-between;
+}
+
+.food-list {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+.food-list th,
+.food-list td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+}
+.food-list th {
+    background-color: #f2f2f2;
+    cursor: pointer;
+    user-select: none;
+}
+.food-list th.no-sort {
+    cursor: default;
+}
+
+/* Estilos para o ícone de ordenação */
+.sort-icon {
+    margin-left: 5px;
+    font-size: 0.8em;
+    color: #666;
+}
+.food-list th.sorted-asc .sort-icon {
+    content: "▲";
+    color: #333;
+}
+.food-list th.sorted-desc .sort-icon {
+    content: "▼";
+    color: #333;
+}
+
+/* Highlighting Rows */
+.row-favorite {
+    background-color: #fffacd;
+}
+.row-worst {
+    background-color: #ffcccc;
+}
+.row-attention {
+    background-color: #ffe4b2;
+    border: 2px solid #ffaa00;
+}
+
+/* Status and Tag Styles */
+.status-select {
+    padding: 5px;
+    border-radius: 4px;
+}
+.status-tag {
+    padding: 5px 8px;
+    border-radius: 4px;
+    font-weight: bold;
+    display: inline-block;
+    white-space: nowrap;
+}
+.status-tag.favorite {
+    background-color: #f0ad4e;
+    color: white;
+}
+.status-tag.worst {
+    background-color: #d9534f;
+    color: white;
+}
+
+/* Footer Style */
+footer {
+    margin-top: 50px;
+    font-size: 0.8em;
+    color: #666;
+}
+
+#food-search-input {
+    padding: 10px;
+    font-size: 16px;
+    width: 70%;
+    margin-top: 10px;
+}
+#stomach-size-input {
+    padding: 5px;
+    width: 80px;
+    text-align: right;
+}
+
+/* Centralization of Selects de Tags */
+#global-tags-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+#fav-worst-selects {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 600px;
+}
+#fav-worst-selects label {
+    display: block;
+}
+#fav-worst-selects select {
+    padding: 8px;
+    font-size: 14px;
+    width: 100%;
+}
