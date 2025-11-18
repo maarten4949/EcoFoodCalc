@@ -6,40 +6,38 @@
         <title>Eco FoodCalc - Diet Optimizer</title>
         <link rel="stylesheet" type="text/css" href="styles/styles.css" />
         <script src="scripts/script.js"></script>
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css"
+          />
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
     </head>
     <body>
-        <div id="version-display">
-            Version 0.1<br />
-            Last update: <span id="last-update-date"></span>
+
+
+        <div class="title-card">
+            <div class="u-flex-grow">
+                <h1>Eco FoodCalc - Diet Optimizer</h1>
+                <p>
+                    This tool helps maximize your <span class="u-bold">Nutrition Bonus</span> for faster skill
+                    point gain in Eco.
+                </p>
+            </div>
+            <div class="">
+                <div class="actions">
+                    <button onclick="resetPreferences()" class="reset-button button button-danger"><i class="ph ph-cube"></i>Reset All Preferences</button>
+                    <button onclick="exportUserData()" class="export-button button"><i class="ph ph-cube"></i>Export Data</button>
+                    <input type="file" id="import-file-input" accept=".json" style="display: none" onchange="importUserData()">
+                    <button onclick="document.getElementById('import-file-input').click()" class="import-button button"><i class="ph ph-cube"></i>Import Data</button>
+                </div>
+                <p>Current Session Status: <span id="user-session"></span></p>
+            </div>
         </div>
 
-        <h1>Eco FoodCalc - Diet Optimizer</h1>
 
-        <p>Current Session Status: <span id="user-session"></span></p>
-        <div style="margin-bottom: 20px">
-            <button onclick="resetPreferences()" class="reset-button" >
-                Reset All Preferences
-            </button>
-            <button onclick="exportUserData()" class="export-button">Export Data</button>
-            <input
-                type="file"
-                id="import-file-input"
-                accept=".json"
-                style="display: none"
-                onchange="importUserData()"
-            />
-            <button
-                onclick="document.getElementById('import-file-input').click()"
-                class="import-button"
-            >
-                Import Data
-            </button>
-        </div>
-
-        <p>
-            This tool helps maximize your **Nutrition Bonus** for faster skill
-            point gain in Eco.
-        </p>
 
         <div style="margin-bottom: 20px">
             <label for="stomach-size-input">Stomach Size (Calories): </label>
@@ -70,6 +68,10 @@
 
         <footer>
             <hr />
+            <div id="version-display">
+                Version 0.1<br />
+                Last update: <span id="last-update-date"></span>
+            </div>
             <p>Created by CrazySpy. Design by Maarten494</p>
         </footer>
 
