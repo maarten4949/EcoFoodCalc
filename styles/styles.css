@@ -31,12 +31,6 @@ h1 {
     background-color: #f9f9f9;
 }
 
-/* --- LAYOUT DA DIETA (Lista + Gráfico lado a lado) --- */
-#diet-suggestion-container {
-    margin-bottom: 40px;
-    padding: 20px 0; /* Ajuste o padding interno para ficar mais limpo */
-}
-
 /* Estilo para cada opção de dieta */
 .optimal-diet-box {
     border: 2px solid #5cb85c !important; /* Verde mais escuro para o melhor */
@@ -292,9 +286,9 @@ footer {
     }
 }
 .food-table {
-    overflow-x: scroll;
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0;
     & .th-content {
         display: flex;
         justify-content: space-between;
@@ -302,13 +296,33 @@ footer {
     }
     & th {
         background-color: var(--background-layer-3);
+        border-top: 1px solid var(--border-normal);
+    }
+    & th:first-child {
+        border-top-left-radius: var(--radius-l);
+    }
+    & th:last-child {
+        border-top-right-radius: var(--radius-l);
+    }
+    & tr:last-child td:last-child {
+        border-bottom-right-radius: var(--radius-l);
+    }
+    & tr:last-child td:first-child {
+        border-bottom-left-radius: var(--radius-l);
+    }
+    & td:first-child, th:first-child {
+        border-left: 1px solid var(--border-normal);
     }
     & td,
     th {
         padding-inline: var(--spacing-05);
         padding-block: var(--spacing-03);
-        border: 1px solid var(--border-normal);
+        border-bottom: 1px solid var(--border-normal);
+        border-right: 1px solid var(--border-normal);
     }
+}
+.table-container {
+    overflow-x: scroll;
 }
 .icon {
     font-size: var(--fz-6);

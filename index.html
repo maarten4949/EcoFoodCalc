@@ -103,12 +103,12 @@
             </main>
         </div>
         <div class="full-width-card card">
-            <div id="column-left">
+            <header id="column-left">
                 <h2>Suggested Diet Optimization</h2>
-                <div id="diet-suggestion-container">
-                    <p>Processing optimization algorithm...</p>
-                </div>
-            </div>
+            </header>
+            <main id="diet-suggestion-container">
+                <p>Processing optimization algorithm...</p>
+            </main>
         </div>
         <div id="food-container" class="full-width-card card">
             <header>
@@ -116,10 +116,13 @@
                     <p>Manage the foods you have already tried.</p>
             </header>
             <main>
-                <table id="food-table" class="food-table">
-                </table>
-                <p id="food-container-status"> </p>
-        </div>
+                <div class="table-container">
+                    <table id="food-table" class="food-table">
+                    </table>
+                    <p id="food-container-status"> </p>
+                </div>
+            </main>
+         </div>
         <footer>
             <hr />
             <div id="version-display">
