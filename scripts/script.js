@@ -191,7 +191,9 @@ function saveLastSelectedStatus(status) {
 /**
  * Adds a selected food from the search box to the evaluated list by updating its status.
  */
-function addFoodToEvaluatedList(foodName) {
+function addFoodToEvaluatedList(event) {
+  event.preventDefault();
+  const foodName = document.getElementById("food").value.trim();
   // Encontra o item (case sensitive) e garante que ele existe e ainda não foi avaliado
   const itemKey = foodData.find(
     (item) => item.Food_Name === foodName,
@@ -206,9 +208,7 @@ function addFoodToEvaluatedList(foodName) {
     return;
   }
 
-  const selectedStatus = document.getElementById(
-    "new-food-status-select",
-  ).value;
+  const selectedStatus = document.getElementById("food-status").value;
 
   if (
     selectedStatus === FOOD_STATUS_KEYS.SELECT_STATUS ||
@@ -237,7 +237,7 @@ function addFoodToEvaluatedList(foodName) {
   saveUserPreferences();
   renderFoodLists();
 
-  document.getElementById("food-search-input").value = ""; // Limpa a caixa de busca
+  document.getElementById("food").value = ""; // Limpa a caixa de busca
 }
 
 // --- NOVIDADE: EXPORTAR E IMPORTAR DADOS ---
@@ -774,7 +774,6 @@ function renderFoodLists() {
   calculateSuggestedDiet();
 
   // --- COLUNA DIREITA (Tags + Busca) ---
-  let rightColumnHtml = "";
   document.querySelector("#favorite-food").innerHTML = generateSelectHtml(
     "favorite",
     evaluatedFoods,
@@ -784,9 +783,7 @@ function renderFoodLists() {
     evaluatedFoods,
   );
 
-  // Passo 1: INTERFACE DE BUSCA
-  rightColumnHtml += renderSearchInterface(unevaluatedFoods);
-  columnRightContainer.innerHTML = rightColumnHtml;
+  renderSearchInterface(unevaluatedFoods);
 
   // --- TABELA DE AVALIADAS (Abaixo das colunas) ---
   renderEvaluatedTableComponent(evaluatedFoods);
@@ -978,35 +975,21 @@ function renderSearchInterface(foods) {
   );
 
   // Cria o HTML para o dropdown de Status
-  const statusSelectHtml = `
-     <label style="font-weight: bold; margin-right: 15px;">Set initial status:</label>
-     <select id="new-food-status-select" class="status-select" onchange="saveLastSelectedStatus(this.value)" style="width: 100%; margin-bottom: 10px;">
-         ${ratingOptions
-           .map((s) => {
-             const isSelected = s === lastSelectedStatus;
-             const defaultLabel =
-               s === FOOD_STATUS_KEYS.DELICIOUS ? " (Default)" : "";
-             return `<option value="${s}" ${isSelected ? "selected" : ""}>${s}${defaultLabel}</option>`;
-           })
-           .join("")}
-     </select>
-     <br>
- `;
+  const statusSelect = document.querySelector("#food-status");
+  statusSelect.innerHTML = ratingOptions
+    .map((s) => {
+      const isSelected = s === lastSelectedStatus;
+      const defaultLabel = s === FOOD_STATUS_KEYS.DELICIOUS ? " (Default)" : "";
+      return `<option value="${s}" ${isSelected ? "selected" : ""}>${s}${defaultLabel}</option>`;
+    })
+    .join("");
 
   // Cria a lista de opções para o datalist
   const options = foods
     .map((item) => `<option value="${item.Food_Name}">`)
     .join("");
-
-  let searchHtml = `
-     ${statusSelectHtml}
-     <input list="food-datalist" id="food-search-input" onchange="addFoodToEvaluatedList(this.value)" placeholder="Type or select food name (${foods.length} remaining)" autocomplete="off">
-     <datalist id="food-datalist">
-         ${options}
-     </datalist>
-     <p style="margin-top: 10px; font-size: 0.9em; color: #666;">Note: The selected status above will be applied instantly upon adding the food.</p>
- `;
-  return searchHtml;
+  const foodDatalist = document.querySelector("#food-datalist");
+  foodDatalist.innerHTML = options;
 }
 
 // --- Core Functions (Non-Global) ---
