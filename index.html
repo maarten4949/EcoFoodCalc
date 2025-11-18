@@ -56,7 +56,7 @@
                         <i class="ph ph-download-simple icon"></i>Import Data
                     </button>
                 </div>
-                <p>Current Session Status: <span id="user-session"></span></p>
+                <p>Current Session Status: <span id="session-status"></span></p>
             </div>
         </div>
 
@@ -110,14 +110,23 @@
                 </div>
             </div>
         </div>
-        <div id="food-container" class="full-width-card"></div>
+        <div id="food-container" class="full-width-card">
+            <header>
+                    <h2>Your Evaluated Foods</h2>
+                    <p>Manage the foods you have already tried.</p>
+            </header>
+            <main>
+                <table id="food-table" class="food-table">
+                </table>
+                <p id="food-container-status"> </p>
+        </div>
         <footer>
             <hr />
             <div id="version-display">
                 Version 0.1<br />
                 Last update: <span id="last-update-date"></span>
             </div>
-            <p>Created by CrazySpy. Design by Maarten494</p>
+            <p>Created by CrazySpy. UI by Maarten494</p>
         </footer>
     </body>
 </html>

@@ -42,6 +42,7 @@ let currentSortOrder = "desc";
 // Elementos da UI (variáveis para serem usadas em várias funções)
 let sessionElement;
 let foodContainer;
+let foodContainerStatus;
 let columnRightContainer;
 let dietSuggestionContainer;
 
@@ -714,14 +715,15 @@ function calculateSuggestedDiet() {
  * Initializes the application.
  */
 async function initApp() {
-  sessionElement = document.getElementById("user-session");
+  sessionElement = document.getElementById("session-status");
+  foodContainerStatus = document.getElementById("food-container-status");
   foodContainer = document.getElementById("food-container");
   columnRightContainer = document.getElementById("column-right");
   dietSuggestionContainer = document.getElementById(
     "diet-suggestion-container",
   );
   sessionElement.textContent = "Checking preferences...";
-  foodContainer.innerHTML = "Loading food data..."; // Dynamic loading message
+  foodContainerStatus.innerHTML = "Loading food data..."; // Dynamic loading message
 
   try {
     // 1. Load the JSON file
@@ -745,9 +747,10 @@ async function initApp() {
 
     // 3. Render the two main components (Evaluated List + Search)
     renderFoodLists();
+    foodContainerStatus.innerHTML = ""; // Clear loading message
   } catch (error) {
     console.error("Error loading or processing JSON:", error);
-    foodContainer.innerHTML = `<p style="color: red;">Error loading ${FOOD_SOURCE_URL}. Please check the file name and format.</p>`;
+    foodContainerStatus.innerHTML = `<p style="color: red;">Error loading ${FOOD_SOURCE_URL}. Please check the file name and format.</p>`;
     sessionElement.textContent = "Failed to start session.";
   }
 
@@ -802,11 +805,9 @@ function renderEvaluatedTableComponent(foodsOverride) {
       return prefs && prefs.status !== FOOD_STATUS_KEYS.REMOVE_FROM_LIST;
     });
 
-  let html = "<h2>Your Evaluated Foods</h2>";
-  html += `<p>Manage the foods you have already tried. (Evaluated Foods: ${foods.length})</p>`;
-  html += renderEvaluatedTable(foods);
-
-  foodContainer.innerHTML = html;
+  const html = renderEvaluatedTable(foods);
+  const foodTable = document.getElementById("food-table");
+  foodTable.innerHTML = html;
 }
 
 /**
