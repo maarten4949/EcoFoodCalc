@@ -295,9 +295,16 @@ footer {
     overflow-x: scroll;
     width: 100%;
     border-collapse: collapse;
+    & .th-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    & th {
+        background-color: var(--background-layer-3);
+    }
     & td,
     th {
-        min-width: max-content;
         padding-inline: var(--spacing-05);
         padding-block: var(--spacing-03);
         border: 1px solid var(--border-normal);

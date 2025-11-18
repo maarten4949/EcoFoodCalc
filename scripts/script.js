@@ -880,7 +880,7 @@ function renderEvaluatedTable(foods) {
     // Se não for ordenável, não permite o clique
     if (!isSortable) {
       // Food Name
-      tableHtml += `<th class="no-sort">${headerName}</th>`;
+      tableHtml += `<th class="no-sort"><div class= "th-content">${headerName}</div></th>`;
       return;
     }
 
@@ -889,12 +889,12 @@ function renderEvaluatedTable(foods) {
     const sortedClass = isSorted ? `sorted-${currentSortOrder}` : "";
 
     tableHtml += `<th onclick="sortTable('${headerName}')" class="${sortedClass}">
-         ${headerName} <span class="sort-icon">${icon}</span>
+    <div class= "th-content">${headerName}<span class="sort-icon">${icon}</span></div>
      </th>`;
   });
 
   // Coluna Status (Não Ordenável)
-  tableHtml += '<th class="no-sort">Status</th>';
+  tableHtml += '<th class="no-sort"><div class= "th-content">Status</div></th>';
   tableHtml += "</tr></thead><tbody>";
 
   foods.forEach((item) => {
