@@ -17,34 +17,10 @@
 
         <p>Current Session Status: <span id="user-session"></span></p>
         <div style="margin-bottom: 20px">
-            <button
-                onclick="resetPreferences()"
-                style="
-                    padding: 5px 10px;
-                    background-color: #f44336;
-                    color: white;
-                    border: none;
-                    cursor: pointer;
-                    border-radius: 4px;
-                    margin-right: 10px;
-                "
-            >
+            <button onclick="resetPreferences()" class="reset-button" >
                 Reset All Preferences
             </button>
-            <button
-                onclick="exportUserData()"
-                style="
-                    padding: 5px 10px;
-                    background-color: #3f51b5;
-                    color: white;
-                    border: none;
-                    cursor: pointer;
-                    border-radius: 4px;
-                    margin-right: 10px;
-                "
-            >
-                Export Data
-            </button>
+            <button onclick="exportUserData()" class="export-button">Export Data</button>
             <input
                 type="file"
                 id="import-file-input"
@@ -54,14 +30,7 @@
             />
             <button
                 onclick="document.getElementById('import-file-input').click()"
-                style="
-                    padding: 5px 10px;
-                    background-color: #009688;
-                    color: white;
-                    border: none;
-                    cursor: pointer;
-                    border-radius: 4px;
-                "
+                class="import-button"
             >
                 Import Data
             </button>
@@ -101,7 +70,7 @@
 
         <footer>
             <hr />
-            <p>Created by CrazySpy.</p>
+            <p>Created by CrazySpy. Design by Maarten494</p>
         </footer>
 
 
