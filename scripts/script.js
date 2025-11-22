@@ -180,6 +180,15 @@ function updateFoodStatus(foodName, newStatus) {
     renderEvaluatedTableComponent();
   }
 }
+function removeItemFromPreferences(foodName) {
+  const oldStatus = userPreferences[foodName].status;
+  userPreferences[foodName] = {
+    status: FOOD_STATUS_KEYS.REMOVE_FROM_LIST,
+    timestamp: 0,
+  };
+  saveUserPreferences();
+  renderFoodLists();
+}
 
 /**
  * Saves the last selected status to localStorage.
@@ -450,17 +459,17 @@ function renderNutrientDistribution(dietAnalysis) {
   // --- Lógica da Lista de Porcentagens com Destaque de Cor ---
 
   let html = `
-     <div style="flex: 1; padding-left: 20px; display: flex; flex-direction: column; align-items: center;">
-         <h5 style="text-align: center; margin-top: 0;">Nutrient Distribution</h5>
+     <div class="nutrient-distribution-container">
+         <h5 class="balance-modifier">
+             Balance Modifier: <span class="balance-modifier-value">${balanceModifier}</span>
+         </h5>
+         <p class="nutrient-title">Nutrients (Goal: 25% each):</p>
 
-         <div style="width: 100px; height: 100px; border-radius: 50%; border: 3px solid #333; margin-bottom: 10px; ${conicGradientStyle}">
+         <div class="nutrient-chart" style="${conicGradientStyle}">
              </div>
 
-         <div style="font-size: 1.0em; text-align: center; margin-bottom: 10px;">
-             <strong>Balance Modifier: ${balanceModifier}</strong>
-         </div>
-         <div style="width: 100%;">
-             <ul style="list-style-type: none; padding: 0;">
+         <div>
+             <ul class="nutrient-list">
                  ${data
                    .map((slice) => {
                      // Regra de destaque: Vermelho se muito fora (22% a 28% é a margem ideal)
@@ -470,7 +479,10 @@ function renderNutrientDistribution(dietAnalysis) {
 
                      return `<li style="font-weight: ${isUnbalanced ? "bold" : "normal"};">
                          <span style="display: inline-block; width: 10px; height: 10px; background-color: ${slice.color}; margin-right: 4px;"></span>
-                         <span style="${colorStyle}">${slice.label}: ${slice.percent.toFixed(1)}% (Goal: ${slice.goal}%)</span>
+                         <div class="nutrient-item">
+                          <span class="nutrient-label" style="${colorStyle}">${slice.label}:</span>
+                          <span class="nutrient-percentage" style="${colorStyle}">${slice.percent.toFixed(1)}%</span>
+                         </div>
                      </li>`;
                    })
                    .join("")}
@@ -507,16 +519,24 @@ function renderDietOption(dietAnalysis, optionNumber) {
     const item = foodCounts[key];
     // 🚨 CORREÇÃO: Mostra sempre o multiplicador 1x quando a contagem é 1.
     const multiplier = `${item.count}x `;
-    foodListHtml += `<li>- ${multiplier}${item.food.Food_Name} (${item.food.Official_Calories_Game} Kcal) [Status: ${userPreferences[item.food.Food_Name].status}]</li>`;
+    foodListHtml += `<li class='food-tag'><div class='food-tag-name'>${multiplier}${item.food.Food_Name}</div><div class='food-tag-calories'>Calories: <span class="food-tag-calories-value">${item.food.Official_Calories_Game} Kcal</span></div><div class='food-tag-status'>Status: <span class="food-tag-status-value">${userPreferences[item.food.Food_Name].status}</span></div></li>`;
   }
-
+  let recommendedTag = "";
+  if (isOptimal) {
+    recommendedTag = `<span class="recommended-tag"><i class="ph-fill ph-star icon"></i>Recommended</span>`;
+  }
   let html = `
-     <div class="${itemClass}" style="margin-bottom: 25px; border: 1px solid ${isOptimal ? "#5cb85c" : "#ccc"}; padding: 15px; border-radius: 6px;">
-         <h4 style="margin-top: 0; color: ${isOptimal ? "#449d44" : "#333"};">${title}</h4>
-         <div class="diet-option-content" style="display: flex; justify-content: space-between;">
-             <div style="flex: 1;">
-                 <p><strong>Total Diet Calories: ${dietAnalysis.totals.TotalCalories} Kcal (Balance Score: ${dietAnalysis.score.toFixed(2)})</strong></p>
-                 <ul style="list-style-type: none; padding: 0;">
+     <div class="${itemClass} diet-option-box">
+        <div class="diet-option-header">
+         <h4 class="diet-option-title">${title}</h4>
+         ${recommendedTag}
+        </div>
+         <div class="diet-option-content">
+             <div class="diet-option-food-container">
+                <div class='diet-option-metadata'>
+                  <p class='total-calories'>Total Diet Calories: ${dietAnalysis.totals.TotalCalories} Kcal</p><p class='balance-score'>Balance Score: ${dietAnalysis.score.toFixed(2)}</p>
+                 </div>
+                 <ul class='food-tags'>
                      ${foodListHtml}
                  </ul>
              </div>
@@ -700,12 +720,12 @@ function calculateSuggestedDiet() {
 
   // --- Passo 3: Renderizar Resultados ---
 
-  let finalHtml = `<p><strong>Goal Calories: ${stomachSize} Kcal</strong></p>`;
+  let finalHtml = `<p class="calorie-goal">Goal Calories: <strong>${stomachSize} Kcal</strong></p><div class="diet-options-container">`;
 
   top3Diets.forEach((diet, index) => {
     finalHtml += renderDietOption(diet, index + 1);
   });
-
+  finalHtml += "</div>";
   dietSuggestionContainer.innerHTML = finalHtml;
 }
 
@@ -895,6 +915,7 @@ function renderEvaluatedTable(foods) {
 
   // Coluna Status (Não Ordenável)
   tableHtml += '<th class="no-sort"><div class= "th-content">Status</div></th>';
+  tableHtml += '<th class="no-sort"><div class= "th-content"></div></th>';
   tableHtml += "</tr></thead><tbody>";
 
   foods.forEach((item) => {
@@ -940,6 +961,9 @@ function renderEvaluatedTable(foods) {
          <td>${item.Vitamins}</td>
          <td>${item.Official_Calories_Game}</td>
          <td>${statusCellContent}</td>
+         <td><button onclick="removeItemFromPreferences('${name}')" class="reset-button button button-danger">
+             <i class="ph ph-trash icon"></i>Remove
+         </button></td>
      </tr>`;
   });
 

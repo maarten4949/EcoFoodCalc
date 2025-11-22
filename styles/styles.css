@@ -22,16 +22,6 @@ h1 {
     flex: 1; /* Ocupa 50% */
     min-width: 45%;
 }
-
-/* Estilo para cada opção de dieta */
-.optimal-diet-box {
-    border: 2px solid #5cb85c !important; /* Verde mais escuro para o melhor */
-    box-shadow: 0 0 10px rgba(92, 184, 92, 0.4);
-}
-.alternative-diet-box {
-    border: 1px solid #ccc;
-}
-
 /* Container interno para dividir lista e análise de nutrientes */
 .diet-option-content {
     display: flex;
@@ -147,6 +137,7 @@ footer {
     --radius-s: 0.1875rem;
     --radius: 0.375rem;
     --radius-l: 0.75rem;
+    --radius-xl: 1.5rem;
     --brand-primary: #4196ad;
     --brand-secondary: #4688c0;
     --grey-10: #f2f3f3;
@@ -256,6 +247,9 @@ h2 {
 footer {
     grid-column: span 2;
 }
+select {
+    cursor: pointer;
+}
 input,
 select {
     background-color: var(--background-layer-3);
@@ -288,8 +282,12 @@ select {
         align-items: center;
     }
     & th {
+        cursor: pointer;
         background-color: var(--background-layer-3);
         border-top: 1px solid var(--border-normal);
+    }
+    & th.no-sort {
+        cursor: default;
     }
     & th:first-child {
         border-top-left-radius: var(--radius-l);
@@ -315,6 +313,7 @@ select {
         border-right: 1px solid var(--border-normal);
     }
 }
+
 .table-container {
     overflow-x: scroll;
 }
@@ -362,6 +361,133 @@ select {
         color: var(--color-status-negative);
     }
 }
+.button-primary {
+    background-color: var(--background-brand);
+    color: var(--color-normal-inverted);
+    border-color: var(--border-brand);
+    & .icon {
+        color: var(--color-normal-inverted);
+    }
+}
+.calorie-goal {
+    margin-bottom: var(--spacing-05);
+}
+.diet-options-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-05);
+}
+.diet-option-box {
+    padding: 1rem;
+    border-radius: var(--radius-l);
+    border: 1px solid var(--border-normal);
+    flex-grow: 1;
+    & h4 {
+        font-size: var(--fz-5);
+        line-height: var(--spacing-07);
+        font-weight: 400;
+    }
+    & .diet-option-content {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--spacing-05);
+        flex-grow: 1;
+        justify-content: center;
+        & .diet-option-food-container,
+        .nutrient-distribution-container {
+            flex-grow: 1;
+        }
+    }
+
+    & .diet-option-metadata {
+        margin-block: var(--spacing-05);
+    }
+    & .food-tags {
+        list-style-type: none;
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--spacing-05);
+    }
+    & .food-tag {
+        padding: var(--spacing-05);
+        border: 1px solid var(--border-normal);
+        border-radius: var(--radius-l);
+        flex-grow: 1;
+        & .food-tag-calories-value,
+        .food-tag-status-value,
+        .food-tag-name {
+            font-weight: 600;
+        }
+        & .food-tag-name {
+            margin-bottom: var(--spacing-05);
+        }
+    }
+    & .nutrient-title {
+        font-weight: 400;
+        font-size: var(--fz-2);
+        line-height: var(--spacing-06);
+    }
+    & .balance-modifier {
+        font-size: var(--fz-5);
+        line-height: var(--spacing-07);
+        font-weight: 400;
+        & .balance-modifier-value {
+            font-weight: 600;
+        }
+    }
+    & .nutrient-distribution-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        & .nutrient-chart {
+            width: 6.5rem;
+            height: 6.5rem;
+            border-radius: 50%;
+            margin-block: var(--spacing-03);
+        }
+        & .nutrient-list {
+            list-style-type: none;
+            display: flex;
+            flex-direction: column;
+            & li {
+                display: flex;
+                align-items: center;
+                flex-grow: 1;
+                & .nutrient-item {
+                    flex-grow: 1;
+                    display: flex;
+                    gap: 1rem;
+                    justify-content: space-between;
+                }
+            }
+        }
+    }
+}
+.optimal-diet-box {
+    border: 1px solid var(--border-brand);
+    & .diet-option-title {
+        color: var(--color-brand);
+    }
+}
+.diet-option-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-05);
+}
+.recommended-tag {
+    border-radius: var(--radius-xl);
+    padding: var(--spacing-04);
+    display: flex;
+    gap: var(--spacing-03);
+    align-items: center;
+    background-color: var(--background-brand);
+    color: var(--color-normal-inverted);
+    & .icon {
+        color: var(--color-normal-inverted);
+        fill: var(--color-normal-inverted);
+    }
+}
 .title-card {
     padding: 1rem;
     display: flex;
@@ -389,6 +515,9 @@ select {
 @media (width < 1100px) {
     .title-card {
         flex-direction: column;
+        align-items: flex-start;
+    }
+    .title-actions-status {
         align-items: flex-start;
     }
 }

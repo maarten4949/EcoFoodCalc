@@ -11,6 +11,11 @@
             type="text/css"
             href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css"
         />
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css"
+        />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link
@@ -39,7 +44,7 @@
                     <button
                         onclick="exportUserData()"
                         class="export-button button"
-                    >
+                    ><i class="ph ph-export icon"></i>
                         Export Data
                     </button>
                     <input
@@ -63,28 +68,38 @@
         <div class="card">
             <header><h2>Global Settings</h2></header>
             <main>
-                <label for="stomach-size-input"
-                    >Stomach Size (Calories):
-                </label>
-                <input
-                    type="number"
-                    id="stomach-size-input"
-                    value="3000"
-                    min="100"
-                    onchange="updateStomachSize(this.value)"
-                />
-                <label for="favorite-food">Favorite Food:</label>
-                <select
-                    id="favorite-food"
-                    data-tag-type="favorite"
-                    onchange="setGlobalTag(this)"
-                ></select>
-                <label for="worst-food">Worst Food:</label>
-                <select
-                    id="worst-food"
-                    onchange="setGlobalTag(this)"
-                    data-tag-type="worst"
-                ></select>
+                <form onsubmit="(event) => event.preventDefault()">
+                    <div class="form-group-container">
+                        <div class="form-group">
+                            <label for="stomach-size-input"
+                                >Stomach Size (Calories):
+                            </label>
+                            <input
+                                type="number"
+                                id="stomach-size-input"
+                                value="3000"
+                                min="100"
+                                onchange="updateStomachSize(this.value)"
+                            />
+                        </div>
+                        <div class="form-group">
+                            <label for="favorite-food">Favorite Food:</label>
+                            <select
+                                id="favorite-food"
+                                data-tag-type="favorite"
+                                onchange="setGlobalTag(this)"
+                            ></select>
+                        </div>
+                        <div class="form-group">
+                            <label for="worst-food">Worst Food:</label>
+                            <select
+                                id="worst-food"
+                                onchange="setGlobalTag(this)"
+                                data-tag-type="worst"
+                            ></select>
+                        </div>
+                    </div>
+                </form>
             </main>
         </div>
         <div id="column-right" class="card">
@@ -105,7 +120,7 @@
                         </div>
                     </div>
                     <div class="button-group">
-                        <button class="button button-primary">Add Food</button>
+                        <button class="button button-primary">Add Food <i class="ph ph-plus icon"></i></button>
                     </div>
                 </form>
             </main>
