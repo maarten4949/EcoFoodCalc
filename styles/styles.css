@@ -5,13 +5,6 @@ h1 {
     margin: 0;
 }
 
-/* Version Top Right */
-#version-display {
-    float: right;
-    font-size: 0.9em;
-    color: #555;
-}
-
 /* --- LAYOUT DE DUAS COLUNAS PARA FERRAMENTAS --- */
 #main-content-layout {
     display: flex;
@@ -181,9 +174,11 @@ footer {
     --background-layer-1: var(--grey-10);
     --background-layer-2: var(--white);
     --background-layer-3: var(--grey-10);
+    --background-layer-4: var(--grey-20);
     --background-brand: var(--brand-primary);
     --background-brand-secondary: var(--brand-secondary);
     --background-status-positive: var(--green);
+    --background-status-negative: var(--red);
 
     --border-normal: var(--grey-20);
     --border-soft: var(--grey-10);
@@ -246,6 +241,9 @@ h2 {
 }
 footer {
     grid-column: span 2;
+    display: flex;
+    gap: var(--spacing-08);
+    justify-content: center;
 }
 select {
     cursor: pointer;
@@ -257,6 +255,10 @@ select {
     border-radius: var(--radius);
     padding: var(--spacing-03);
     font-family: Inter, sans-serif;
+    transition: all 0.2s ease;
+    &:hover {
+        border-color: var(--border-hard);
+    }
 }
 .card {
     border-radius: var(--radius-l);
@@ -285,9 +287,16 @@ select {
         cursor: pointer;
         background-color: var(--background-layer-3);
         border-top: 1px solid var(--border-normal);
+        transition: all 0.2s ease;
+        &:hover {
+            background-color: var(--background-layer-4);
+        }
     }
     & th.no-sort {
         cursor: default;
+        &:hover {
+            background-color: var(--background-layer-3);
+        }
     }
     & th:first-child {
         border-top-left-radius: var(--radius-l);
@@ -352,6 +361,11 @@ select {
     gap: var(--spacing-03);
     font-size: var(--fz-3);
     line-height: var(--spacing-06);
+    transition: all 0.2s ease;
+
+    &:hover {
+        background-color: var(--background-layer-3);
+    }
 }
 .button-danger {
     color: var(--color-status-negative);
@@ -360,6 +374,13 @@ select {
     & .icon {
         color: var(--color-status-negative);
     }
+    &:hover {
+        background-color: var(--background-status-negative);
+        color: var(--color-normal-inverted);
+        & .icon {
+            color: var(--color-normal-inverted);
+        }
+    }
 }
 .button-primary {
     background-color: var(--background-brand);
@@ -367,6 +388,9 @@ select {
     border-color: var(--border-brand);
     & .icon {
         color: var(--color-normal-inverted);
+    }
+    &:hover {
+        background-color: var(--background-brand-secondary);
     }
 }
 .calorie-goal {
@@ -473,6 +497,7 @@ select {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
     margin-bottom: var(--spacing-05);
 }
 .recommended-tag {
@@ -524,6 +549,11 @@ select {
 @media (width < 600px) {
     .card {
         grid-column: span 2;
+    }
+}
+@media (width < 350px) {
+    body {
+        padding: var(--spacing-05);
     }
 }
 .actions {
