@@ -905,11 +905,15 @@ function renderEvaluatedTable(foods) {
     }
 
     const isSorted = dataKey === currentSortColumn;
-    const icon = isSorted ? (currentSortOrder === "asc" ? "▲" : "▼") : "↕";
+    const icon = isSorted
+      ? currentSortOrder === "asc"
+        ? "<i class='ph ph-arrow-up sort-icon'></i>"
+        : "<i class='ph ph-arrow-down sort-icon'></i>"
+      : "<i class='ph ph-arrows-down-up sort-icon'></i>";
     const sortedClass = isSorted ? `sorted-${currentSortOrder}` : "";
 
     tableHtml += `<th onclick="sortTable('${headerName}')" class="${sortedClass}">
-    <div class= "th-content">${headerName}<span class="sort-icon">${icon}</span></div>
+    <div class= "th-content">${headerName}${icon}</div>
      </th>`;
   });
 
@@ -947,6 +951,8 @@ function renderEvaluatedTable(foods) {
                  ${STATUS_OPTIONS.map((s) => {
                    // Não mostra 'Remove from list' ou '--- SELECT STATUS ---' na tabela (só no dropdown de ação)
                    if (s === FOOD_STATUS_KEYS.SELECT_STATUS) return "";
+                   if (s === FOOD_STATUS_KEYS.REMOVE_FROM_LIST) return "";
+
                    return `<option value="${s}" ${s === prefs.status ? "selected" : ""}>${s}</option>`;
                  }).join("")}
              </select>

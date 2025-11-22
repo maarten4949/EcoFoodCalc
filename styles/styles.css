@@ -41,21 +41,6 @@ h1 {
     cursor: default;
 }
 
-/* Estilos para o ícone de ordenação */
-.sort-icon {
-    margin-left: 5px;
-    font-size: 0.8em;
-    color: #666;
-}
-.food-list th.sorted-asc .sort-icon {
-    content: "▲";
-    color: #333;
-}
-.food-list th.sorted-desc .sort-icon {
-    content: "▼";
-    color: #333;
-}
-
 /* Highlighting Rows */
 .row-favorite {
     background-color: #fffacd;
@@ -322,7 +307,14 @@ select {
         border-right: 1px solid var(--border-normal);
     }
 }
-
+.sort-icon {
+    font-size: var(--fz-3);
+    line-height: var(--spacing-06);
+    margin-left: var(--spacing-03);
+}
+.status-select {
+    width: 100%;
+}
 .table-container {
     overflow-x: scroll;
 }
